@@ -26,7 +26,7 @@ jobs:
       - name: Get repos
         id: create-list
         # run: echo "::set-output name=repos::$(python3 .github/workflows/get-repos.py)"
-        run: echo "::set-output name=repos::[ 'guide-maven-intro' ]"
+        run: echo "::set-output name=repos::[ 'repo-dne' ]"
   get-builds:
     runs-on: ubuntu-latest
     outputs:
