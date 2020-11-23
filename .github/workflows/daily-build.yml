@@ -109,7 +109,11 @@ jobs:
           BUILDLEVEL: ${{ matrix.builds.build_level }}
           DEVDATE: ${{ matrix.builds.date }}
           DRIVER: ${{ matrix.builds.driver_location }}
-        run: sudo sh ../scripts/dailyBuild.sh
+        run: |
+          export BUILDLEVEL
+          export DEVDATE
+          export DRIVER
+          sudo ../scripts/dailyBuild.sh
       - name: Post tests
         working-directory: ${{ matrix.repos }}
         if: always()
