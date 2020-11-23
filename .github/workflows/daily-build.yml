@@ -92,9 +92,6 @@ jobs:
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      BUILDLEVEL: ${{ matrix.builds.build_level }}
-      DEVDATE: ${{ matrix.builds.date }}
-      DRIVER: ${{ matrix.builds.driver_location }}
     steps:
       - name: Clone ${{ matrix.repos }}
         uses: actions/checkout@v2
@@ -108,7 +105,11 @@ jobs:
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
       - name: Run tests for ${{ matrix.repos }}
         working-directory: ${{ matrix.repos }}/finish
-        run: sudo ../scripts/dailyBuild.sh
+        env:
+          BUILDLEVEL: ${{ matrix.builds.build_level }}
+          DEVDATE: ${{ matrix.builds.date }}
+          DRIVER: ${{ matrix.builds.driver_location }}
+        run: sudo sh ../scripts/dailyBuild.sh
       - name: Post tests
         working-directory: ${{ matrix.repos }}
         if: always()
