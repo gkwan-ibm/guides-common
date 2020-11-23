@@ -1,7 +1,8 @@
-
 name: Daily build testing
 
 on:
+  repository_dispatch:
+    types: [ daily-build ]
   workflow_dispatch:
     inputs:
       date:
@@ -13,8 +14,8 @@ on:
       build:
         description: Build level
         required: true
-  repository_dispatch:
-    types: [ daily-build ]
+  schedule:
+    - cron: 0 0 * * *
 
 jobs:
   get-repos:
@@ -26,7 +27,7 @@ jobs:
       - name: Get repos
         id: create-list
         # run: echo "::set-output name=repos::$(python3 .github/workflows/get-repos.py)"
-        run: echo "::set-output name=repos::[ 'repo-dne' ]"
+        run: echo "::set-output name=repos::[ 'guide-getting-started' ]"
   get-builds:
     runs-on: ubuntu-latest
     outputs:
@@ -40,7 +41,7 @@ jobs:
       - name: Use input list
         if: ${{ github.event_name == 'workflow_dispatch'}}
         id: use-list
-        run: echo ::set-output name=builds::'[{ "date":"${{github.event.inputs.date}}", "driver_location":"${{github.event.inputs.driver}}", "build_level":"${{github.event.inputs.build}}"}]'
+        run: echo ::set-output name=builds::'[{ "date":"${{github.event.inputs.date}}", "driver_location":"${{github.event.inputs.driver}}", "build_level":"${{github.events.input.build}}"}]'
   create-config-matrix:
     runs-on: ubuntu-latest
     needs: [ get-repos, get-builds ]
@@ -71,8 +72,8 @@ jobs:
         with:
           repository: OpenLiberty/ci.docker
           path: ci.docker
-      - name: Docker login
-        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+      #- name: Docker login
+      #  run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
       - name: Build Docker image for ${{ matrix.builds.date }}
         run: |
           cd ci.docker/releases/latest/kernel-slim
@@ -88,6 +89,12 @@ jobs:
     strategy:
       max-parallel: 5
       matrix: ${{ fromJson(needs.create-config-matrix.outputs.matrix) }}
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      BUILDLEVEL: ${{ matrix.builds.build_level }}
+      DEVDATE: ${{ matrix.builds.date }}
+      DRIVER: ${{ matrix.builds.driver_location }}
     steps:
       - name: Clone ${{ matrix.repos }}
         uses: actions/checkout@v2
@@ -97,9 +104,11 @@ jobs:
           ref: refs/heads/gh-actions
       - name: Set permissions
         run: chmod +x ${{ matrix.repos }}/scripts/*.sh
+      - name: Docker login
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
       - name: Run tests for ${{ matrix.repos }}
         working-directory: ${{ matrix.repos }}/finish
-        run: sudo ../scripts/dailyBuild.sh -t ${{ matrix.builds.date }} -d ${{ matrix.builds.driver_location }} -b ${{ matrix.builds.build_level }}
+        run: sudo ../scripts/dailyBuild.sh
       - name: Post tests
         working-directory: ${{ matrix.repos }}
         if: always()
