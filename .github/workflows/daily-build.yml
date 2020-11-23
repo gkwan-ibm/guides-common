@@ -17,6 +17,10 @@ on:
   schedule:
     - cron: 0 0 * * *
 
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
 jobs:
   get-repos:
     runs-on: ubuntu-latest
@@ -63,8 +67,6 @@ jobs:
       matrix:
         builds: ${{ fromJson(needs.get-builds.outputs.builds) }}
     env:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       DHE_URL: http://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/nightly
     steps:
       - name: Clone ci.docker repository
@@ -89,9 +91,6 @@ jobs:
     strategy:
       max-parallel: 5
       matrix: ${{ fromJson(needs.create-config-matrix.outputs.matrix) }}
-    env:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     steps:
       - name: Clone ${{ matrix.repos }}
         uses: actions/checkout@v2
@@ -109,12 +108,7 @@ jobs:
           BUILDLEVEL: ${{ matrix.builds.build_level }}
           DEVDATE: ${{ matrix.builds.date }}
           DRIVER: ${{ matrix.builds.driver_location }}
-        run: |
-          export BUILDLEVEL=$BUILDLEVEL
-          export DEVDATE=$DEVDATE
-          export DRIVER=$DRIVER
-          export DOCKER_USERNAME=$DOCKER_USERNAME
-          sudo ../scripts/dailyBuild.sh
+        run: sudo ../scripts/dailyBuild.sh
       - name: Post tests
         working-directory: ${{ matrix.repos }}
         if: always()
