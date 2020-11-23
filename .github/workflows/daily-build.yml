@@ -108,7 +108,7 @@ jobs:
           BUILDLEVEL: ${{ matrix.builds.build_level }}
           DEVDATE: ${{ matrix.builds.date }}
           DRIVER: ${{ matrix.builds.driver_location }}
-        run: sudo ../scripts/dailyBuild.sh
+        run: sudo ../scripts/dailyBuild.sh -t $DEVDATE -d $DRIVER -b $BUILDLEVEL -u $DOCKER_USERNAME
       - name: Post tests
         working-directory: ${{ matrix.repos }}
         if: always()
