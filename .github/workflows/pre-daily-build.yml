@@ -16,8 +16,8 @@ jobs:
       matrix: ${{ steps.create-matrix.outputs.matrix }}
     steps: 
       - uses: actions/checkout@v2
-      - name: Get builds
-        id: create-list
+      - name: Get build matrix
+        id: create-matrix
         run: |
           BUILDS=$(python3 .github/workflows/get-builds.py)
           echo "Builds found"
