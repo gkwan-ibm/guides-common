@@ -1,8 +1,7 @@
 name: Daily build testing
 
 on:
-  repository_dispatch:
-    types: [ daily-build ]
+  workflow_dispatch:
   schedule:
     - cron: 0 0 * * *
 
