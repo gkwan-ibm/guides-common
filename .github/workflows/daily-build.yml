@@ -37,7 +37,7 @@ jobs:
     strategy:
       max-parallel: 5
       matrix:
-        repos: ${{ fromJson(needs.create-config-matrix.outputs.repos) }}
+        repos: ${{ fromJson(needs.get-guide-repos.outputs.repos) }}
         jdk: [ 8, 11 ]
     steps:
       - name: Setup JDK ${{ matrix.jdk }}
