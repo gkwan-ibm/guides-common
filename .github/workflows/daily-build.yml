@@ -58,7 +58,7 @@ jobs:
         working-directory: ${{ matrix.repos }}/finish
         env:
           BUILDLEVEL: ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
-          DEVDATE: ${{ github.event.client_payload.date }}${{ github.event.inputs.date }}
+          DEVDATE: ${{ github.event.client_payload.dev-date }}${{ github.event.inputs.date }}
           DRIVER: ${{ github.event.client_payload.driver-location }}${{ github.event.inputs.driver }}
         run: sudo ../scripts/dailyBuild.sh -t $DEVDATE -d $DRIVER -b $BUILDLEVEL -u $DOCKER_USERNAME
       - name: Post tests
