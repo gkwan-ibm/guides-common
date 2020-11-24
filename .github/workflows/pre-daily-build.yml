@@ -52,8 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build-docker-image, get-builds ]
     strategy:
-      matrix:
-        builds: ${{ fromJson(needs.get-builds.outputs.builds) }}
+      matrix: ${{ fromJson(needs.get-builds.outputs.matrix) }}
     steps:
       - name: Trigger daily builds
         shell: pwsh
