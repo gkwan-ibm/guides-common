@@ -20,14 +20,15 @@ jobs:
         id: create-list
         run: |
           BUILDS=$(python3 .github/workflows/get-builds.py)
+          echo "Builds found"
+          echo $BUILDS
           matrix="{ \"builds\":$BUILDS }"
           echo "::set-output name=matrix::$matrix" 
   build-docker-image:
     runs-on: ubuntu-latest
     needs: get-builds
     strategy:
-      matrix:
-        builds: ${{ fromJson(needs.get-builds.outputs.builds) }}
+      matrix: ${{ fromJson(needs.get-builds.outputs.matrix) }}
     env:
       DHE_URL: http://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/nightly
     steps:
