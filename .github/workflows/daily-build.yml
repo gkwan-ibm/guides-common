@@ -34,6 +34,7 @@ jobs:
   test-guide:
     needs: [ get-guide-repos ]
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
       max-parallel: 5
       matrix:
