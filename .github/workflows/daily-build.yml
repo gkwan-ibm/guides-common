@@ -67,7 +67,10 @@ jobs:
         if: always()
         run: |
           logsPath=$(sudo find . -name "console.log");
-          sudo cat $logsPath | grep Launching
+          if [ -z "$logsPath" ]
+            then docker images
+            else sudo cat $logsPath | grep Launching
+          fi
       - name: Archive server logs if failed
         if: failure()
         uses: actions/upload-artifact@v2
