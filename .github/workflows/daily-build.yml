@@ -30,7 +30,7 @@ jobs:
       - name: Get repos
         id: create-list
         # run: echo "::set-output name=repos::$(python3 .github/workflows/get-repos.py)"
-        run: echo "::set-output name=repos::[ 'guide-microprofile-jwt' ]"
+        run: echo "::set-output name=repos::[ 'guide-microprofile-jwt', 'guide-gradle-intro', 'guide-jpa-intro', 'guide-istio-intro', 'guide-kubernetes-config', 'guide-microprofile-config', 'guide-cloud-ibm', 'guide-maven-intro', 'guide-getting-started' ]"
   test-guide:
     needs: [ get-guide-repos ]
     runs-on: ubuntu-latest
