@@ -31,7 +31,7 @@ jobs:
       - name: Get repos
         id: create-list
         # run: echo "::set-output name=repos::$(python3 .github/workflows/get-repos.py)"
-        run: echo "::set-output name=repos::[ 'guide-microprofile-jwt', 'guide-gradle-intro', 'guide-jpa-intro', 'guide-istio-intro', 'guide-kubernetes-config', 'guide-microprofile-config', 'guide-cloud-ibm', 'guide-maven-intro', 'guide-getting-started', 'guide-social-media-login' ]"
+        run: echo "::set-output name=repos::[ 'guide-getting-started', 'guide-maven-intro', 'guide-microprofile-config', 'guide-cloud-ibm', 'guide-kubernetes-intro', 'guide-istio-intro', 'guide-microprofile-reactive-messaging', 'guide-jpa-intro', 'guide-gradle-intro', 'guide-cloud-openshift-operator', 'guide-microprofile-jwt', 'guide-social-media-login', 'guide-sessions' ]"
       - name: Starting daily build tests for ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
   test-guide:
     needs: [ get-guide-repos ]
