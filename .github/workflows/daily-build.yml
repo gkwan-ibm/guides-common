@@ -45,6 +45,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.jdk }}
+      - name: Starting daily build tests for ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
       - name: Clone ${{ matrix.repos }}
         uses: actions/checkout@v2
         with:
