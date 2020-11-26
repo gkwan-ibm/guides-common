@@ -31,6 +31,7 @@ jobs:
         id: create-list
         # run: echo "::set-output name=repos::$(python3 .github/workflows/get-repos.py)"
         run: echo "::set-output name=repos::[ 'guide-microprofile-jwt', 'guide-gradle-intro', 'guide-jpa-intro', 'guide-istio-intro', 'guide-kubernetes-config', 'guide-microprofile-config', 'guide-cloud-ibm', 'guide-maven-intro', 'guide-getting-started' ]"
+      - name: Starting daily build tests for ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
   test-guide:
     needs: [ get-guide-repos ]
     runs-on: ubuntu-latest
@@ -45,7 +46,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.jdk }}
-      - name: Starting daily build tests for ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
       - name: Clone ${{ matrix.repos }}
         uses: actions/checkout@v2
         with:
