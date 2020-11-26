@@ -59,7 +59,7 @@ jobs:
       - name: Set permissions
         run: chmod +x ${{ matrix.repos }}/scripts/*.sh
       - name: Docker login
-        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        run: echo $DOCKER_PASSWORD | sudo docker login -u $DOCKER_USERNAME --password-stdin
       - name: Run tests for ${{ matrix.repos }}
         working-directory: ${{ matrix.repos }}/finish
         env:
@@ -73,7 +73,7 @@ jobs:
         run: |
           logsPath=$(sudo find . -name "console.log");
           if [ -z "$logsPath" ]
-            then docker images
+            then sudo docker images
             else sudo cat $logsPath | grep Launching
           fi
       - name: Archive server logs if failed
