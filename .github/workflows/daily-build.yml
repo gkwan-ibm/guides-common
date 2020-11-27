@@ -15,7 +15,6 @@ on:
         description: Build level
         required: true
 
-
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -31,8 +30,7 @@ jobs:
       - name: Get repos
         id: create-list
         # run: echo "::set-output name=repos::$(python3 .github/workflows/get-repos.py)"
-        # run: echo "::set-output name=repos::[ 'guide-getting-started', 'guide-maven-intro', 'guide-microprofile-config', 'guide-cloud-ibm', 'guide-kubernetes-intro', 'guide-istio-intro', 'guide-microprofile-reactive-messaging', 'guide-jpa-intro', 'guide-gradle-intro', 'guide-cloud-openshift-operator', 'guide-microprofile-jwt', 'guide-social-media-login', 'guide-sessions' ]"
-        run: echo "::set-output name=repos::[ 'guide-cloud-openshift-operator' ]"
+        run: echo "::set-output name=repos::[ 'guide-getting-started', 'guide-maven-intro', 'guide-microprofile-config', 'guide-cloud-ibm', 'guide-kubernetes-intro', 'guide-istio-intro', 'guide-microprofile-reactive-messaging', 'guide-jpa-intro', 'guide-gradle-intro', 'guide-cloud-openshift-operator', 'guide-microprofile-jwt', 'guide-social-media-login', 'guide-sessions' ]"
   build-level:
     runs-on: ubuntu-latest
     steps:
