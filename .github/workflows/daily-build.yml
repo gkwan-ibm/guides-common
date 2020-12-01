@@ -38,7 +38,7 @@ jobs:
       - name: Set repo
         if: ${{ github.event.inputs.guide != 'all' }}
         id: input-guide
-        run: echo "::set-output name=repo::${{.github.event.inputs.guide }}"
+        run: echo "::set-output name=repo::[ ${{ github.event.inputs.guide }} ]"
   build-level:
     runs-on: ubuntu-latest
     steps:
