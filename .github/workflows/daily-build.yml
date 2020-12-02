@@ -3,6 +3,11 @@ name: Daily build testing
 on:
   repository_dispatch:
     types: [ daily-build ]
+    inputs:
+        guide:
+        description: Guide to build
+        default: "all"
+        required: true
   workflow_dispatch:
     inputs:
       date:
