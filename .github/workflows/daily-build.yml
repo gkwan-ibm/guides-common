@@ -3,11 +3,6 @@ name: Daily build testing
 on:
   repository_dispatch:
     types: [ daily-build ]
-    inputs:
-        guide:
-        description: Guide to build
-        default: "all"
-        required: true
   workflow_dispatch:
     inputs:
       date:
@@ -37,7 +32,7 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       - name: Get repos
-        if: ${{ github.event.inputs.guide == 'all' }}
+        if: ${{ github.event.inputs.guide == 'all' || github.event.event_type == "daily-build" }}
         id: create-list
         run: echo "::set-output name=repos::$(python3 .github/workflows/get-repos.py)"
       - name: Set repo
