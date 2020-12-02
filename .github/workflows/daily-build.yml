@@ -32,7 +32,7 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       - name: Get repos
-        if: ${{ github.event.inputs.guide == 'all' }} || ${{ github.event.event_type == "daily-build" }}
+        if: github.event.inputs.guide == 'all' || github.event.event_type == "daily-build" 
         id: create-list
         run: echo "::set-output name=repos::$(python3 .github/workflows/get-repos.py)"
       - name: Set repo
