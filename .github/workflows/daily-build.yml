@@ -109,4 +109,4 @@ jobs:
       - name: get-status 
         run: |
             ls -a
-            python3 .github/workflows/get-failed-builds.py ${{ github.repository_owner }} ${{ github.repository }} ${{ github.run_id }}
+            python3 .github/workflows/get-failed-builds.py ${{ github.repository }} ${{ github.run_id }}
