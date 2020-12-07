@@ -23,6 +23,6 @@ if __name__ == "__main__":
         if job['conclusion'] == 'failure' and 'draft' not in job['steps'][2]['name']:
             failed_builds.add(job['steps'][2]['name'].split(' ')[1])
     # print(list(failed_builds))
-    print(json.dumps(list(failed_builds)))
+    print(list(failed_builds))
 
     # print(failed_builds, len(failed_builds))
