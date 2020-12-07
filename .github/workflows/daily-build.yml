@@ -2,7 +2,7 @@ name: Daily build testing
 
 on:
   repository_dispatch:
-    types: [ daily-build ]
+    types: [daily-build]
   workflow_dispatch:
     inputs:
       date:
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       repos: ${{ steps.create-list.outputs.repos }}${{ steps.input-guide.outputs.repo }}
-    steps: 
+    steps:
       - uses: actions/checkout@v2
       - name: Get repos
         if: ${{ github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch' && github.event.inputs.guide == 'all' }}
@@ -47,14 +47,14 @@ jobs:
           echo "Build level: "
           echo ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
   test-guide:
-    needs: [ get-guide-repos ]
+    needs: [get-guide-repos]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 5
       matrix:
         repos: ${{ fromJson(needs.get-guide-repos.outputs.repos) }}
-        jdk: [ 8, 11 ]
+        jdk: [8, 11]
     steps:
       - name: Setup JDK ${{ matrix.jdk }}
         uses: actions/setup-java@v1
@@ -105,4 +105,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: get-status
-        run: echo "great work"
+        run: python3 .github/workflows/get-failed-builds.py ${{ github.repository_owner }} ${{ github.repository }} ${{ github.run_id }}
