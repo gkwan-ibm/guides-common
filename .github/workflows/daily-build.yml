@@ -105,7 +105,16 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       builds: ${{ steps.set-builds.builds }}
+    env:
+      BUILDLEVEL: ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
+      DEVDATE: ${{ github.event.client_payload.dev-date }}${{ github.event.inputs.date }}
+      DRIVER: ${{ github.event.client_payload.driver-location }}${{ github.event.inputs.driver }}
     steps:
       - name: get-status
         id: set-builds
-        run: echo "::set-output name=builds::$(python3 .github/workflows/get-failed-builds.py ${{ github.repository }} ${{ github.run_id }})"
+        run: |
+          repos=$(python3 .github/workflows/get-failed-builds.py ${{ github.repository }} ${{ github.run_id }})
+          out=$(jq -n --arg repos "$repos" --arg BUILDLEVEL "${{ env.BUILDLEVEL }}" --arg DEVDATE "${{ env.DEVDATE }}"\
+            --arg DRIVER "${{ env.DRIVER }}" '{repos: $repos, BUILDLEVEL: $BUILDLEVEL, DEVDATE: $DEVDATE, DRIVER: $DRIVER}')
+          echo $out
+          echo "::set-output name=builds::$(out)"
