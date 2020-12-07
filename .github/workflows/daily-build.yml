@@ -105,4 +105,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: get-status 
-        run: python3 .github/workflows/get-failed-builds.py ${{ github.repository_owner }} ${{ github.repository }} ${{ github.run_id }}
+        run: |
+            ls -a
+            python3 .github/workflows/get-failed-builds.py ${{ github.repository_owner }} ${{ github.repository }} ${{ github.run_id }}
