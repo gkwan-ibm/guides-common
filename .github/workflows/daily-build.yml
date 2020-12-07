@@ -110,6 +110,7 @@ jobs:
       DEVDATE: ${{ github.event.client_payload.dev-date }}${{ github.event.inputs.date }}
       DRIVER: ${{ github.event.client_payload.driver-location }}${{ github.event.inputs.driver }}
     steps:
+      - uses: actions/checkout@v2
       - name: get-status
         id: set-builds
         run: |
