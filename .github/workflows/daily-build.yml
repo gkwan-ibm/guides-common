@@ -99,14 +99,13 @@ jobs:
         with:
           name: server-logs
           path: ${{ matrix.repos }}/finish/target/liberty/wlp/usr/servers/defaultServer/logs/
-  slack-alert:
+  get-status:
     needs: [test-guide]
     if: failure()
     runs-on: ubuntu-latest
-    
+    outputs:
+      builds: ${{ steps.set-builds.builds }}
     steps:
-      - uses: actions/checkout@v2
-      - name: get-status 
-        run: |
-            ls -a
-            python3 .github/workflows/get-failed-builds.py ${{ github.repository }} ${{ github.run_id }}
+      - name: get-status
+        id: set-builds
+        run: echo "::set-output name=builds::$(python3 .github/workflows/get-failed-builds.py ${{ github.repository }} ${{ github.run_id }})"
