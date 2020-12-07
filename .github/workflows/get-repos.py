@@ -32,4 +32,4 @@ if __name__ == "__main__":
     drafts = json.load(open(JSON_PATH))
     output += drafts
 
-    print(output[:5])
+    print(output[:2])
