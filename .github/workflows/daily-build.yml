@@ -101,6 +101,7 @@ jobs:
           path: ${{ matrix.repos }}/finish/target/liberty/wlp/usr/servers/defaultServer/logs/
   slack-alert:
     needs: [test-guide]
+    if: failure()
     runs-on: ubuntu-latest
     steps:
       - name: get-status
