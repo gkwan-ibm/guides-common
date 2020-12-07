@@ -9,14 +9,12 @@ HEADERS = {
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('owner', type=str)
-    parser.add_argument('repo', type=str)
+    parser.add_argument('owner_repo', type=str)
     parser.add_argument('run_id', type=str)
     args = parser.parse_args()
-    owner = args.owner
-    repo = args.repo
+    owner_repo = args.owner_repo
     run_id = args.run_id
-    url = f"https://api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/jobs?per_page=100&filter=latest"
+    url = f"https://api.github.com/repos/{owner_repo}/actions/runs/{run_id}/jobs?per_page=100&filter=latest"
     res = requests.get(url, headers=HEADERS).json()
  
     print(args)
