@@ -99,3 +99,10 @@ jobs:
         with:
           name: server-logs
           path: ${{ matrix.repos }}/finish/target/liberty/wlp/usr/servers/defaultServer/logs/
+  slack-alert:
+    needs: [test-guide]
+    if: ${{ test-guide.status == 'failed'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: get-status
+        run: echo "great work"
