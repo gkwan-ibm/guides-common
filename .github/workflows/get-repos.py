@@ -1,13 +1,14 @@
 import requests
 
 BASE_REPO_URL = "https://api.github.com/orgs/OpenLiberty/repos"
+JSON_PATH = ".github/workflows/good-drafts.json"
 
 HEADERS = {
     "Accept": "application/vnd.github.v3+json"
 }
 
 def published_guide_name(name):
-    return "guide-" == name[:6] or "draft-guide-" == name[:12]
+    return "guide-" == name[:6]
 
 if __name__ == "__main__":
     output = []
@@ -26,5 +27,8 @@ if __name__ == "__main__":
             repo_name = repo["name"]
             if published_guide_name(repo_name):
                 output.append(repo_name)
+
+    drafts = json.load(open(JSON_PATH))
+    output += drafts
 
     print(output)
