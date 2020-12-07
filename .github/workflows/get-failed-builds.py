@@ -19,12 +19,13 @@ if __name__ == "__main__":
     url = f"https://api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/jobs?per_page=100&filter=latest"
     res = requests.get(url, headers=HEADERS).json()
  
-
+    print(args)
     failed_builds = set()
     for job in res['jobs']:
         if job['conclusion'] == 'failure' and 'draft' not in job['steps'][2]['name']: 
             failed_builds.add(job['steps'][2]['name'].split(' ')[1])
     print(list(failed_builds))
     print(json.dumps(list(failed_builds)))
+    
     # print(failed_builds, len(failed_builds))
 
