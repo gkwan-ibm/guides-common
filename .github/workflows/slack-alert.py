@@ -60,7 +60,8 @@ if __name__ == "__main__":
     parser.add_argument('driverlocation', type=str)
     parser.add_argument('devdate', type=str)
     parser.add_argument('status', type=str)
-    parser.add_argument('url', type=str)
+    parser.add_argument('ownerRepo', type=str)
+    parser.add_argument('runID', type=str)
     parser.add_argument('slackhook', type=str)
     args = parser.parse_args()
     
@@ -68,7 +69,8 @@ if __name__ == "__main__":
     message["attachments"][0]["blocks"][1]["fields"][1]["text"] = f"*Dev Date:*\n {args.devdate}"
     message["attachments"][0]["blocks"][1]["fields"][2]["text"] = f"*Build Level:*\n {args.buildlevel}"
     message["attachments"][0]["blocks"][2]["text"]["text"] = f"*Driver Location:* {args.driverlocation}"
-    message["attachments"][0]["blocks"][3]["text"]["text"] = f"*<{args.url}| Builds>*"
+    workflow_url = f"https://github.com/{args.ownerRepo}/actions/runs/{args.runID}"
+    message["attachments"][0]["blocks"][3]["text"]["text"] = f"*<{workflow_url}| Builds>*"
     
 
     if args.status == 'FAILURE':
