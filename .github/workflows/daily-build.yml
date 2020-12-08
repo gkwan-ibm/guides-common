@@ -110,4 +110,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: send-status
-        run: python3 .github/workflows/slack-alert.py FAILURE ${{ env.BUILDLEVEL }} ${{ env.DRIVER }} ${{ env.DEVDATE }} ${{ github.run_id }}
+        run: |
+          python3 .github/workflows/slack-alert.py FAILURE ${{ env.BUILDLEVEL }} ${{ env.DRIVER }} ${{ env.DEVDATE }} \
+          ${{ github.repository }} ${{ github.run_id }} ${{ secrets.slackHook }} 
