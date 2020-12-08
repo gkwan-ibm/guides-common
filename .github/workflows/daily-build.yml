@@ -99,23 +99,15 @@ jobs:
         with:
           name: server-logs
           path: ${{ matrix.repos }}/finish/target/liberty/wlp/usr/servers/defaultServer/logs/
-  get-status:
+  slack-alert:
     needs: [test-guide]
     if: failure()
     runs-on: ubuntu-latest
-    outputs:
-      builds: ${{ steps.set-builds.builds }}
     env:
       BUILDLEVEL: ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
       DEVDATE: ${{ github.event.client_payload.dev-date }}${{ github.event.inputs.date }}
       DRIVER: ${{ github.event.client_payload.driver-location }}${{ github.event.inputs.driver }}
     steps:
       - uses: actions/checkout@v2
-      - name: get-status
-        id: set-builds
-        run: |
-          repos=$(python3 .github/workflows/get-failed-builds.py ${{ github.repository }} ${{ github.run_id }})
-          out=$(jq -n --arg repos "$repos" --arg BUILDLEVEL "${{ env.BUILDLEVEL }}" --arg DEVDATE "${{ env.DEVDATE }}"\
-            --arg DRIVER "${{ env.DRIVER }}" '{repos: $repos, BUILDLEVEL: $BUILDLEVEL, DEVDATE: $DEVDATE, DRIVER: $DRIVER}')
-          echo $out
-          echo "::set-output name=builds::$(out)"
+      - name: send-status
+        run: python3 .github/workflows/slack-alert.py FAILURE ${{ env.BUILDLEVEL }} ${{ env.DRIVER }} ${{ env.DEVDATE }} ${{ github.run_id }}
