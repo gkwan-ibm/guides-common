@@ -64,18 +64,21 @@ if __name__ == "__main__":
     parser.add_argument('slackhook', type=str)
     args = parser.parse_args()
     
-    message["attachments"][0]["blocks"][1]["fields"][0]["text"] = f"*Status:*\n {args.status}"
+    message["attachments"][0]["blocks"][1]["fields"][0]["text"] = f"*Status:*\n {args.status.upper()}"
     message["attachments"][0]["blocks"][1]["fields"][1]["text"] = f"*Dev Date:*\n {args.devdate}"
     message["attachments"][0]["blocks"][1]["fields"][2]["text"] = f"*Build Level:*\n {args.buildlevel}"
     message["attachments"][0]["blocks"][2]["text"]["text"] = f"*Driver Location:* {args.driverlocation}"
     message["attachments"][0]["blocks"][3]["text"]["text"] = f"*<{args.url}| Builds>*"
     
 
-    if args.status == 'FAILURE':
+    status = args.status.upper()
+    if status == 'FAILURE':
         message["attachments"][0]["color"] = "#d73a49"
-    else:
+    elif status == 'SUCCESS':
         message["attachments"][0]["color"] = "#28a745"
-    
+    else:
+	message["attachments"][0]["color"] = "#ffd33d"
+	
     requests.post(args.slackhook, headers=headers, data=json.dumps(message))
     
 
