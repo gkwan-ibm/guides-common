@@ -71,13 +71,13 @@ if __name__ == "__main__":
     message["attachments"][0]["blocks"][3]["text"]["text"] = f"*<{args.url}| Builds>*"
     
 
-    status = args.status.upper()
-    if status == 'FAILURE':
+    status = args.status
+    if status == 'failure':
         message["attachments"][0]["color"] = "#d73a49"
-    elif status == 'SUCCESS':
+    elif status == 'success':
         message["attachments"][0]["color"] = "#28a745"
     else:
-	message["attachments"][0]["color"] = "#ffd33d"
+	message["attachments"][0]["color"] = "#f6f8fa"
 	
     requests.post(args.slackhook, headers=headers, data=json.dumps(message))
     
