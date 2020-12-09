@@ -72,11 +72,14 @@ if __name__ == "__main__":
     workflow_url = f"https://github.com/{args.ownerRepo}/actions/runs/{args.runID}"
     message["attachments"][0]["blocks"][3]["text"]["text"] = f"*<{workflow_url}| Builds>*"
     
-
-    if args.status == 'FAILURE':
+    status = args.status
+    if status == 'failure':
         message["attachments"][0]["color"] = "#d73a49"
-    else:
+    elif status == 'success':
         message["attachments"][0]["color"] = "#28a745"
+    else:
+	message["attachments"][0]["color"] = "#f6f8fa"
+	
     
     requests.post(args.slackhook, headers=headers, data=json.dumps(message))
     
