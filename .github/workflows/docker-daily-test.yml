@@ -63,8 +63,7 @@ jobs:
         env:
           BUILDLEVEL: ${{ github.event.client_payload.build-level }}
           DEVDATE: ${{ github.event.client_payload.dev-date }}
-          DRIVER: ${{ github.event.client_payload.driver-location }}
-        run: sudo ../scripts/dailyBuild.sh -t $DEVDATE -d $DRIVER -b $BUILDLEVEL -u $DOCKER_USERNAME
+        run: sudo ../scripts/dockerImageTest.sh -t $DEVDATE -d $DRIVER
       - name: Post tests
         working-directory: ${{ matrix.repos }}
         if: always()
