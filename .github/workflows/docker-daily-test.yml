@@ -37,7 +37,7 @@ jobs:
           repository: OpenLiberty/${{ matrix.repos }}
           path: ${{ matrix.repos }}
           ref: refs/heads/gh-actions
-          - name: Set permissions
+      - name: Set permissions
         run: chmod +x ${{ matrix.repos }}/scripts/*.sh
       - name: Run tests for ${{ matrix.repos }}
         working-directory: ${{ matrix.repos }}/finish
@@ -73,9 +73,9 @@ jobs:
     if: failure()
     runs-on: ubuntu-latest
     env:
-      BUILDLEVEL: ${{ github.event.client_payload.build-level }}${{ github.event.inputs.build }}
-      DEVDATE: ${{ github.event.client_payload.dev-date }}${{ github.event.inputs.date }}
-      DRIVER: ${{ github.event.client_payload.driver-location }}${{ github.event.inputs.driver }}
+      BUILDLEVEL: ${{ github.event.client_payload.build-level }}
+      DEVDATE: ${{ github.event.client_payload.dev-date }}
+      DRIVER: ${{ github.event.client_payload.driver-location }}
     steps:
       - uses: actions/checkout@v2
       - name: send-status
