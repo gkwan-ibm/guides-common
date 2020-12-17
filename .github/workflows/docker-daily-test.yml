@@ -2,7 +2,7 @@ name: Test Docker Daily Build
 
 on:
   repository_dispatch:
-    types: [ daily-build ]
+    types: [ docker-image-test ]
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -10,24 +10,6 @@ env:
   CHANGE_MINIKUBE_NONE_USER: true
 
 jobs:
-  determine-build-match:
-    runs-on: ubuntu-latest
-    outputs:
-      match: ${{ steps.check.outputs.match }}
-    steps:
-      - name: Check build levels
-        id: check
-        run: |
-          docker pull "openliberty/daily:latest"
-          IMAGEBUILDLEVEL=$(docker inspect --format "{{ index .Config.Labels \"org.opencontainers.image.revision\"}}" openliberty/daily:latest)
-          if [ IMAGEBUILDLEVEL == ${{ github.event.client_payload.build-level }} ]
-          then
-            echo "Image dmatches input build level for testing, beginning tests"
-            echo "::set-output name=match::true"
-          else
-            echo "Image does not match input build level for testing"
-            echo "::set-output name=match::false"
-          fi
   get-repos:
     runs-on: ubuntu-latest
     outputs:
@@ -38,9 +20,8 @@ jobs:
         id: create-list
         run: echo "::set-output name=repos::$(python3 .github/workflows/get-docker-guides.py)"
   test-guide:
-    needs: [ determine-build-match, get-repos ]
+    needs: [ get-repos ]
     runs-on: ubuntu-latest
-    if: "contains(needs.determine-build-match.outputs.match, 'true')"
     strategy:
       fail-fast: false
       max-parallel: 5
