@@ -54,7 +54,7 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.get-builds.outputs.matrix) }}
     env:
-      GH_TOKEN: ${{ secrets.GK_TOKEN }
+      GH_TOKEN: ${{ secrets.GK_TOKEN }}
       URI: "https://api.github.com/repos/gkwan-ibm/guides-common/dispatches"
       ACCEPT_HEADER: "application/vnd.github.v3+json"
       CONTENT_TYPE:: "application/json"
