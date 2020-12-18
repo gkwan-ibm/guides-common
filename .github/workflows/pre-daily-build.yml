@@ -61,13 +61,12 @@ jobs:
       PAYLOAD: '{ "dev-date": "${{ matrix.builds.date }}", "driver-location": "${{ matrix.builds.driver_location }}", "build-level": "${{ matrix.builds.build_level }}"}'
     steps:
       - name: Trigger daily builds
-        shell: pwsh
         run: |
           curl -H "Accept: $ACCEPT_HEADER" \
                -H "Authorization: token $GH_TOKEN" \
                -X POST \
                -d '{ "event_type": "daily-build", "client_payload": $PAYLOAD }' \ 
-               "$URI"
+               $URI
       - name: Trigger Docker image tests
         run: |
           docker pull "openliberty/daily:latest"
@@ -78,5 +77,5 @@ jobs:
                  -H "Authorization: token $GH_TOKEN" \
                  -X POST \
                  -d '{ "event_type": "docker-image-test", "client_payload": $PAYLOAD }' \ 
-                 "$URI"
+                 $URI
           fi
