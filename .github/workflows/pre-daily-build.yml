@@ -71,7 +71,7 @@ jobs:
             `"event_type`":`"daily-build`",
             `"client_payload`": $PAYLOAD
           }"
-          Invoke-RestMethod -Uri ${{ URI }} -Headers $headers -Body $body -Method POST
+          Invoke-RestMethod -Uri "$URI" -Headers $headers -Body $body -Method POST
       - name: Trigger Docker image tests
         run: |
           docker pull "openliberty/daily:latest"
@@ -82,5 +82,5 @@ jobs:
                  -H "Authorization: token $GH_TOKEN" \
                  -X POST \
                  -d '{ "event_type": "docker-image-test", "client_payload": $PAYLOAD }' \ 
-                 $URI
+                 "$URI"
           fi
