@@ -63,15 +63,11 @@ jobs:
       - name: Trigger daily builds
         shell: pwsh
         run: |
-          $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-          $headers.Add("Authorization","token ${{ env.GH_TOKEN }}")
-          $headers.Add("Accept", "${{ env.ACCEPT_HEADER }}")
-          $headers.Add("Content-Type", "${{ env.CONTENT_TYPE }}")
-          $body = "{
-            `"event_type`":`"daily-build`",
-            `"client_payload`": ${{ env.PAYLOAD }} 
-          }"
-          Invoke-RestMethod -Uri ${{ env.URI }} -Headers $headers -Body $body -Method POST
+          curl -H "Accept: $ACCEPT_HEADER" \
+               -H "Authorization: token $GH_TOKEN" \
+               -X POST \
+               -d '{ "event_type": "daily-build", "client_payload": $PAYLOAD }' \ 
+               "$URI"
       - name: Trigger Docker image tests
         run: |
           docker pull "openliberty/daily:latest"
