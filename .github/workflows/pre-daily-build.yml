@@ -64,12 +64,12 @@ jobs:
         shell: pwsh
         run: |
           $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-          $headers.Add("Authorization","token $GH_TOKEN")
-          $headers.Add("Accept", "$ACCEPT_HEADER")
-          $headers.Add("Content-Type", "$CONTENT_TYPE")
+          $headers.Add("Authorization","token ${{ env.GH_TOKEN }}")
+          $headers.Add("Accept", "${{ env.ACCEPT_HEADER }}")
+          $headers.Add("Content-Type", "${{ env.CONTENT_TYPE }}")
           $body = "{
             `"event_type`":`"daily-build`",
-            `"client_payload`": $PAYLOAD
+            `"client_payload`": ${{ env.PAYLOAD }} 
           }"
           Invoke-RestMethod -Uri ${{ env.URI }} -Headers $headers -Body $body -Method POST
       - name: Trigger Docker image tests
